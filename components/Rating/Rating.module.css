@@ -1,9 +1,9 @@
-.star {
-  margin-right: 5px;
+.filled svg {
+  fill: var(--primary);
 }
 
-.filled {
-  fill: var(--primary);
+.star svg {
+  margin-right: 5px;
 }
 
 .editable {

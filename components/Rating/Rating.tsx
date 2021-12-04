@@ -1,44 +1,62 @@
-import { useState, useEffect } from 'react'; 
+import { useState, useEffect, KeyboardEvent } from 'react'; 
 import { RatingProps } from './Rating.props';
 import styles from './Rating.module.css';
 import StartIcon from './star.svg';
 import cn from 'classnames';
 
-export const Rating = ({isEditadble = false, rating, setRating, ...props}: RatingProps): JSX.Element => {
+export const Rating = ({isEditable = false, rating, setRating, ...props}: RatingProps): JSX.Element => {
   
   const [ratingArray, setRatingArray] = useState<JSX.Element[]>(new Array(5).fill(<></>));
 
   useEffect(() => {
-    cosntructRating(rating);
+    constructRating(rating);
   }, [rating]);
 
-  const cosntructRating = (curentRating: number) => {
+  const constructRating = (curentRating: number) => {
     const updatedArray = ratingArray.map((r: JSX.Element, i:number ) => {
       return (
-        <StartIcon
+        <span
           className={cn(styles.star, {
             [styles.filled]: i < curentRating,
-            [styles.editable]: isEditadble
-
-          })}
-          onMouseEnter={() => changeDisplay(i+1)}
+            [styles.editable]: isEditable 
+          })} 
+          onMouseEnter={() => changeDisplay( i + 1 )}
           onMouseLeave={() => changeDisplay(rating)}
-          onClick= {() => console.log(i+1)}
-        />
+          onClick = {() => onClick( i + 1 )} 
+        > 
+          <StartIcon
+            tabIndex = {isEditable ? 0 : -1}
+            onKeyDown ={(e: KeyboardEvent<SVGElement>) => isEditable && handleSpace(i + 1, e)}
+          />
+        </span>
       );
     }); 
     setRatingArray(updatedArray);
   };
 
-  const changeDisplay = (i:number) => {
-    if(!isEditadble){
-      return
+  const changeDisplay = (i: number) => {
+    if(!isEditable){
+      return;
     }
-    cosntructRating(i)
-  }
+    constructRating(i);
+  };
+
+  const onClick = (i: number) => {
+    if(!isEditable || !setRating){
+      return;
+    } 
+    setRating(i);
+  };
+
+  const handleSpace = (i: number, e: KeyboardEvent<SVGElement> ) => {
+    if(e.code != 'Space' || !setRating){
+      return;
+    }
+    setRating(i);
+  };
 
   return (
-     <div {...props} style={{display: 'flex'}}>
+     <div {...props} style={{display:"flex"}}>
        {ratingArray.map((r,i) => <span key={i}> {r} </span>)}
      </div>
   ); 

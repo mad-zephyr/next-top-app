@@ -1,7 +1,7 @@
 import { DetailedHTMLProps, HTMLAttributes, ReactNode } from 'react';
 
 export interface RatingProps extends DetailedHTMLProps <HTMLAttributes <HTMLDivElement>, HTMLDivElement>{
-  isEditadble?: boolean
+  isEditable?: boolean
   rating: number
   setRating?: (rating: number) => void; 
 }
