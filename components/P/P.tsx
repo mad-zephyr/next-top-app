@@ -10,7 +10,7 @@ export const P = ({size = 'm', children, className, ...props}: PProps): JSX.Elem
         [styles.s]: size == 's',
         [styles.m]: size == 'm',
         [styles.l]: size == 'l',
-      })}
+      })} 
       {...props}
     >
       {children}
